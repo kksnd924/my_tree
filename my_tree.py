@@ -30,11 +30,9 @@ def divide(num_list, depth):
             temp = [num]
     if len(temp) != 0:
         out.append(temp)
-
     return out
 
 def output(final):
-    #final = [False, False]
     for i,bar_bool in enumerate(final):
         if i == len(final)-1:
             if bar_bool:
@@ -56,24 +54,26 @@ def output(final):
     index += 1
     return
 
-def solution(n_bars, depth, final):
+def my_tree(n_bars, depth, final):
     divided = divide(n_bars, depth)
     if len(divided) == 1:
-        for i,_ in enumerate(divided[0]):
-            if i != len(divided[0])-1:
-                output(final+[False])
-            else:
-                output(final+[True])
-    else:
-        for i,n_bars_div in enumerate(divided):
-            if i != len(divided)-1:
-                next_final = final+[False]
-                output(next_final)
-            else:
-                next_final = final+[True]
-                output(next_final)
-            n_bars_div.pop(0)
-            solution(n_bars_div, depth+1, next_final)
+        if len(list(set(divided[0]))) == 1:
+            for i,_ in enumerate(divided[0]):
+                if i != len(divided[0])-1:
+                    output(final+[False])
+                else:
+                    output(final+[True])
+            return
+
+    for i,n_bars_div in enumerate(divided):
+        if i != len(divided)-1:
+            next_final = final+[False]
+            output(next_final)
+        else:
+            next_final = final+[True]
+            output(next_final)
+        n_bars_div.pop(0)
+        my_tree(n_bars_div, depth+1, next_final)
     return
 
 def main():
@@ -84,7 +84,7 @@ def main():
     
     n_bars = [len(i.split('|'))-1 for i in lines]
     depth=1
-    solution(n_bars, depth, [])
+    my_tree(n_bars, depth, [])
 
 if __name__ == '__main__':
     main()
