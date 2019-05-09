@@ -23,30 +23,17 @@ elif [ $# -ne 0 ]; then
     exit 1
 fi
 
-
-depth=`expr $depth + 1`
-py_script=my_tree.py  # you have to change this into your location
+py_script=/home/kksnd924/util/my_tree.py
 
 pwd
 
-# ver. 3
-find . | sort | awk -F'/' -v "depth=$depth" '{
-  for(i=1;i<=depth;i++){
-    if(i!=1){
-      printf "/";
-    }
-    printf $i;
-    if(i+1>NF){
-      break;
-    }
-  }
-  print ""
-}' | uniq | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/| /g' | $py_script
+# ver. 4: Expedited displaying when shallow depth
+find . -maxdepth $depth | sort | uniq | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/| /g' | $py_script
 
 
 ### old versions ###
 
-# ver. 1: 
+# ver. 1: Visually improved using awk
 # find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/| /g' | awk -F'|' '{
 #     bar_num = NF-1;
 #     for (i=1; i<=bar_num-1; i++){
@@ -55,5 +42,20 @@ find . | sort | awk -F'/' -v "depth=$depth" '{
 #     print "|" $(NF);
 # }'
 
-# ver. 2: 
+# ver. 2: Display like original tree using python script
 #find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/| /g' | $py_script
+
+# ver. 3: Made it possible to specify depth
+# depth=`expr $depth + 1`
+# find . | sort | awk -F'/' -v "depth=$depth" '{
+#   for(i=1;i<=depth;i++){
+#     if(i!=1){
+#       printf "/";
+#     }
+#     printf $i;
+#     if(i+1>NF){
+#       break;
+#     }
+#   }
+#   print ""
+# }' | uniq | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/| /g' | $py_script
