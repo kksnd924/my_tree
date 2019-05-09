@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ## usage ##
-# tree               : lists the files in the current directory
-# tree [dir]         : lists the files in [dir]
+# tree               : display the files in the current directory
+# tree [dir]         : display the files in [dir]
 # tree [dir] [depth] : [depth] means max display depth of the directory tree 
 
 depth=10
